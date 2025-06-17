@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Axis & Allies Game Submission</title>
+</head>
+<body>
+  <h2>Submit a Game Result</h2>
+  <form id="gameForm">
+    <label>Date:<br><input type="date" name="date" required></label><br><br>
+    <label>Winner:<br><input type="text" name="winner" required></label><br><br>
+    <label>Loser:<br><input type="text" name="loser" required></label><br><br>
+    <label>Axis Player:<br><input type="text" name="axis" required></label><br><br>
+    <label>Allies Player:<br><input type="text" name="allies" required></label><br><br>
+    <label>Winner Played As:<br>
+      <select name="role" required>
+        <option value="winner-as-axis">Axis</option>
+        <option value="winner-as-allies">Allies</option>
+      </select>
+    </label><br><br>
+    <label>Notes (optional):<br><textarea name="notes" rows="4" cols="30"></textarea></label><br><br>
+    <button type="submit">Submit</button>
+  </form>
+  <div id="response"></div>
+  <script>
+    document.getElementById('gameForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = {};
+      formData.forEach((value, key) => data[key] = value);
+
+      fetch("https://script.google.com/macros/s/YOUR_DEPLOYED_WEB_APP_URL/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.text())
+      .then(txt => document.getElementById("response").innerText = txt)
+      .catch(err => document.getElementById("response").innerText = "Error submitting form.");
+    });
+  </script>
+</body>
+</html>
